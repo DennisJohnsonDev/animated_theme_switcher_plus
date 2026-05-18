@@ -1,4 +1,4 @@
-library animated_theme_switcher;
+library animated_theme_switcher_plus;
 
 export 'src/theme_provider.dart';
 export 'src/theme_switcher.dart';

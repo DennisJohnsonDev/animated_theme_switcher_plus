@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:animated_theme_switcher_plus/animated_theme_switcher_plus.dart';
 
 import 'theme_config.dart';
 

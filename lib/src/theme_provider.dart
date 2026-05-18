@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
-import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:animated_theme_switcher_plus/animated_theme_switcher_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
