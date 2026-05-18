@@ -46,6 +46,7 @@ class _ThemeProviderState extends State<ThemeProvider>
 
   @override
   void dispose() {
+    _controller.dispose();
     model.dispose();
     super.dispose();
   }

@@ -1,3 +1,15 @@
+## 0.1.0
+
+- Forked from [kherel/animated_theme_switcher](https://github.com/kherel/animated_theme_switcher) v2.0.10.
+- Renamed package to `animated_theme_switcher_plus`.
+- **Fix:** `AnimationController` in `ThemeProvider` is now properly disposed, preventing memory leaks and the "AnimationController was not disposed" assertion in debug mode.
+- Migrated dev dependency from deprecated `pedantic` to `flutter_lints`.
+- Updated example to use Flutter 3+ `TextTheme.bodyLarge` (replacing deprecated `bodyText1`).
+
+---
+
+## Upstream history (pre-fork)
+
 ## 2.0.10
   - remove the widget tree once the animation is finished
 
