@@ -1,6 +1,7 @@
 import 'package:animated_theme_switcher_plus/animated_theme_switcher_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
+import 'package:flutter/services.dart' show HapticFeedback;
 
 import 'theme_config.dart';
 
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
     final initTheme = isPlatformDark ? darkTheme : lightTheme;
     return ThemeProvider(
       initTheme: initTheme,
+      duration: const Duration(milliseconds: 600),
       builder: (_, myTheme) {
         return MaterialApp(
           title: 'Flutter Demo',
@@ -45,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeSwitchingArea(
+    return PremiumThemeSwitchingArea(
       child: Scaffold(
         drawer: Drawer(
           child: SafeArea(
@@ -95,8 +97,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 },
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Wrap(
+                alignment: WrapAlignment.spaceEvenly,
+                spacing: 12.0,
+                runSpacing: 12.0,
                 children: <Widget>[
                   ThemeSwitcher.switcher(
                     clipper: const ThemeSwitcherBoxClipper(),
@@ -135,11 +139,55 @@ class _MyHomePageState extends State<MyHomePage> {
                         },
                       );
                     },
-                  )
+                  ),
+                  ThemeSwitcher(
+                    clipper: const ThemeSwitcherCirclePlusClipper(),
+                    builder: (context) {
+                      return TapDownButton(
+                        child: const Text('Circle Animation Plus'),
+                        onTap: (details) {
+                          final model =
+                              ThemeModelInheritedNotifier.of(context);
+                          if (model.controller.isAnimating) return;
+                          HapticFeedback.mediumImpact();
+                          PremiumThemeSwitchingArea.changeTheme(
+                            context,
+                            theme: model.theme.brightness == Brightness.light
+                                ? darkTheme
+                                : lightTheme,
+                            offset: details.localPosition,
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  ThemeSwitcher(
+                    clipper: const ThemeSwitcherBoxPlusClipper(),
+                    builder: (context) {
+                      return TapDownButton(
+                        child: const Text('Box Animation Plus'),
+                        onTap: (details) {
+                          final model =
+                              ThemeModelInheritedNotifier.of(context);
+                          if (model.controller.isAnimating) return;
+                          HapticFeedback.mediumImpact();
+                          PremiumThemeSwitchingArea.changeTheme(
+                            context,
+                            theme: model.theme.brightness == Brightness.light
+                                ? darkTheme
+                                : lightTheme,
+                            offset: details.localPosition,
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Wrap(
+                alignment: WrapAlignment.spaceEvenly,
+                spacing: 12.0,
+                runSpacing: 12.0,
                 children: <Widget>[
                   ThemeSwitcher(
                     clipper: const ThemeSwitcherBoxClipper(),
@@ -184,7 +232,53 @@ class _MyHomePageState extends State<MyHomePage> {
                         },
                       );
                     },
-                  )
+                  ),
+                  ThemeSwitcher(
+                    clipper: const ThemeSwitcherBoxPlusClipper(),
+                    builder: (context) {
+                      return TapDownButton(
+                        child: const Text('Box (Reverse) Plus'),
+                        onTap: (details) {
+                          final model =
+                              ThemeModelInheritedNotifier.of(context);
+                          if (model.controller.isAnimating) return;
+                          final brightness = model.theme.brightness;
+                          HapticFeedback.mediumImpact();
+                          PremiumThemeSwitchingArea.changeTheme(
+                            context,
+                            theme: brightness == Brightness.light
+                                ? darkTheme
+                                : lightTheme,
+                            offset: details.localPosition,
+                            isReversed: brightness == Brightness.dark,
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  ThemeSwitcher(
+                    clipper: const ThemeSwitcherCirclePlusClipper(),
+                    builder: (context) {
+                      return TapDownButton(
+                        child: const Text('Circle (Reverse) Plus'),
+                        onTap: (details) {
+                          final model =
+                              ThemeModelInheritedNotifier.of(context);
+                          if (model.controller.isAnimating) return;
+                          final brightness = model.theme.brightness;
+                          HapticFeedback.mediumImpact();
+                          PremiumThemeSwitchingArea.changeTheme(
+                            context,
+                            theme: brightness == Brightness.light
+                                ? darkTheme
+                                : lightTheme,
+                            offset: details.localPosition,
+                            isReversed: brightness == Brightness.dark,
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
               Row(
