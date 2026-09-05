@@ -38,23 +38,25 @@ class ThemeService {
     String? themeName = prefs.getString('previousThemeName');
     if (themeName == null) {
       final isPlatformDark =
-          WidgetsBinding.instance.window.platformBrightness == Brightness.dark;
+          WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+              Brightness.dark;
       themeName = isPlatformDark ? 'light' : 'dark';
     }
     return themeName;
   }
 
-  get initial {
+  ThemeData get initial {
     String? themeName = prefs.getString('theme');
     if (themeName == null) {
       final isPlatformDark =
-          WidgetsBinding.instance.window.platformBrightness == Brightness.dark;
+          WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+              Brightness.dark;
       themeName = isPlatformDark ? 'dark' : 'light';
     }
-    return allThemes[themeName];
+    return allThemes[themeName] ?? lightTheme;
   }
 
-  save(String newThemeName) {
+  void save(String newThemeName) {
     var currentThemeName = prefs.getString('theme');
     if (currentThemeName != null) {
       prefs.setString('previousThemeName', currentThemeName);
@@ -69,9 +71,9 @@ class ThemeService {
 
 class MyApp extends StatelessWidget {
   const MyApp({
-    Key? key,
+    super.key,
     required this.theme,
-  }) : super(key: key);
+  });
   final ThemeData theme;
 
   @override
@@ -90,7 +92,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();

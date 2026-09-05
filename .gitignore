@@ -16,3 +16,6 @@ pubspec.lock
 
 example/.flutter-plugins
 example/.flutter-plugins-dependencies
+
+# Repo-local agent instructions, not part of the package
+CLAUDE.md

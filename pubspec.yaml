@@ -1,19 +1,27 @@
 name: animated_theme_switcher_plus
-description: Enhanced fork of animated_theme_switcher with additional animations and bug fixes.
-version: 0.1.0
+description: Animated theme switching for Flutter, with feathered circle and box reveals that expand from any tap position. Supports forward and reverse playback.
+version: 1.0.0
 homepage: https://github.com/DennisJohnsonDev/animated_theme_switcher_plus
 repository: https://github.com/DennisJohnsonDev/animated_theme_switcher_plus
+issue_tracker: https://github.com/DennisJohnsonDev/animated_theme_switcher_plus/issues
+
+topics:
+  - theme
+  - animation
+  - ui
+  - dark-mode
+  - material
 
 environment:
-  sdk: ">=2.14.4 <4.0.0"
-  flutter: ">=2.5.3"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
 dev_dependencies:
-  flutter_lints: ^4.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true

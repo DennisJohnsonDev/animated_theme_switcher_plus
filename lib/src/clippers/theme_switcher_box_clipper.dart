@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'theme_switcher_clipper.dart';
 
+/// Reveals the incoming theme through a hard-edged rectangle.
+///
+/// The rectangle grows outward from the reveal origin until it covers the
+/// switching area.
+///
+/// For a soft-edged version of the same motion, use
+/// [ThemeSwitcherBoxPlusClipper] under a [PremiumThemeSwitchingArea].
 class ThemeSwitcherBoxClipper implements ThemeSwitcherClipper {
+  /// Creates a rectangular reveal.
   const ThemeSwitcherBoxClipper();
 
   @override

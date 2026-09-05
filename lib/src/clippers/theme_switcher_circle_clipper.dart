@@ -3,7 +3,15 @@ import 'dart:ui';
 import 'theme_switcher_clipper.dart';
 import 'package:flutter/material.dart';
 
+/// Reveals the incoming theme through a hard-edged circle.
+///
+/// The circle grows from the reveal origin until it covers the furthest corner
+/// of the switching area. This is the default clipper for [ThemeSwitcher].
+///
+/// For a soft-edged version of the same motion, use
+/// [ThemeSwitcherCirclePlusClipper] under a [PremiumThemeSwitchingArea].
 class ThemeSwitcherCircleClipper implements ThemeSwitcherClipper {
+  /// Creates a circular reveal.
   const ThemeSwitcherCircleClipper();
 
   @override

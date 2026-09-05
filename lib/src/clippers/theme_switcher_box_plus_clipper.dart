@@ -7,6 +7,7 @@ import 'theme_switcher_clipper.dart';
 /// clipping. [getClip] is a plain-rectangle fallback for the legacy
 /// [ThemeSwitchingArea] and is not called on the premium path.
 class ThemeSwitcherBoxPlusClipper implements ThemeSwitcherClipper {
+  /// Creates the marker for a feathered rectangular reveal.
   const ThemeSwitcherBoxPlusClipper();
 
   @override

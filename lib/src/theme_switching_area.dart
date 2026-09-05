@@ -3,12 +3,29 @@ import 'package:flutter/material.dart';
 import 'clippers/theme_switcher_clipper_bridge.dart';
 import 'theme_provider.dart';
 
+/// The stage a theme reveal plays on, using classic path clipping.
+///
+/// Wrap the screen whose theme should animate. While a switch is in flight this
+/// stacks a screenshot of the outgoing theme against the live subtree rebuilt
+/// under the incoming one, then animates a `ClipPath` between them — producing
+/// a hard-edged shape that grows from the reveal origin.
+///
+/// For soft, feathered reveals use [PremiumThemeSwitchingArea] instead; it
+/// falls back to this same rendering for non-Plus clippers.
+///
+/// ```dart
+/// ThemeSwitchingArea(
+///   child: Scaffold(...),
+/// );
+/// ```
 class ThemeSwitchingArea extends StatelessWidget {
-  ThemeSwitchingArea({
-    Key? key,
+  /// Creates a switching area around [child].
+  const ThemeSwitchingArea({
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
+  /// The subtree that renders in the active theme.
   final Widget child;
 
   @override
@@ -32,11 +49,11 @@ class ThemeSwitchingArea extends StatelessWidget {
         children: [
           if (model.isAnimating)
             Container(
-              key: ValueKey('ThemeSwitchingAreaFirstChild'),
+              key: const ValueKey('ThemeSwitchingAreaFirstChild'),
               child: firstWidget,
             ),
           AnimatedBuilder(
-            key: ValueKey('ThemeSwitchingAreaSecondChild'),
+            key: const ValueKey('ThemeSwitchingAreaSecondChild'),
             animation: model.controller,
             child: animWidget,
             builder: (_, child) {
@@ -59,7 +76,7 @@ class ThemeSwitchingArea extends StatelessWidget {
 
   Widget _getPage(ThemeData brandTheme) {
     return Theme(
-      key: ValueKey('ThemeSwitchingAreaPage'),
+      key: const ValueKey('ThemeSwitchingAreaPage'),
       data: brandTheme,
       child: child,
     );

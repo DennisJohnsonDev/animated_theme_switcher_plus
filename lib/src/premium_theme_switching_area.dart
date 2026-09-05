@@ -20,9 +20,10 @@ import 'theme_switcher.dart';
 /// controller is snapped to its endpoint so the tap gate opens
 /// immediately instead of dragging through imperceptible motion.
 class PremiumThemeSwitchingArea extends StatelessWidget {
-  const PremiumThemeSwitchingArea({Key? key, required this.child})
-      : super(key: key);
+  /// Creates a premium switching area around [child].
+  const PremiumThemeSwitchingArea({super.key, required this.child});
 
+  /// The subtree that renders in the active theme.
   final Widget child;
 
   /// Default controller duration used during a premium reveal.
@@ -69,8 +70,7 @@ class PremiumThemeSwitchingArea extends StatelessWidget {
   }
 
   static bool _isPremium(ThemeSwitcherClipper c) =>
-      c is ThemeSwitcherCirclePlusClipper ||
-      c is ThemeSwitcherBoxPlusClipper;
+      c is ThemeSwitcherCirclePlusClipper || c is ThemeSwitcherBoxPlusClipper;
 
   Widget _page(ThemeData theme) => Theme(
         key: const ValueKey('PremiumThemeSwitchingArea_page'),
@@ -87,12 +87,10 @@ class PremiumThemeSwitchingArea extends StatelessWidget {
     //            (masked, scales in from 1.04 → 1.0).
     //   Reverse: bottom = new theme (always visible), top = old screenshot
     //            (mask shrinks from full → 0 to reveal new beneath).
-    final bottomLayer = isReversed
-        ? _page(model.theme)
-        : RawImage(image: model.image);
-    final topLayer = isReversed
-        ? RawImage(image: model.image)
-        : _page(model.theme);
+    final bottomLayer =
+        isReversed ? _page(model.theme) : RawImage(image: model.image);
+    final topLayer =
+        isReversed ? RawImage(image: model.image) : _page(model.theme);
 
     return AnimatedBuilder(
       animation: model.controller,
@@ -118,8 +116,7 @@ class PremiumThemeSwitchingArea extends StatelessWidget {
 
         // Snap to the controller endpoint once visible motion is done.
         // Forward end = 1.0, reverse end = 0.0.
-        final shouldSnap =
-            isReversed ? (t <= visibleEnd) : (t >= visibleEnd);
+        final shouldSnap = isReversed ? (t <= visibleEnd) : (t >= visibleEnd);
         if (shouldSnap && model.controller.isAnimating) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (model.controller.isAnimating) {
@@ -169,8 +166,7 @@ class PremiumThemeSwitchingArea extends StatelessWidget {
           children: [
             if (model.isAnimating)
               Opacity(
-                opacity:
-                    math.pow(1 - eased, 0.6).toDouble().clamp(0.0, 1.0),
+                opacity: math.pow(1 - eased, 0.6).toDouble().clamp(0.0, 1.0),
                 child: Transform.scale(
                   scale: 1.0 + 0.04 * eased,
                   child: bottomLayer,
@@ -187,12 +183,10 @@ class PremiumThemeSwitchingArea extends StatelessWidget {
   }
 
   Widget _legacyReveal(ThemeModel model) {
-    final outgoing = model.isReversed
-        ? _page(model.theme)
-        : RawImage(image: model.image);
-    final incoming = model.isReversed
-        ? RawImage(image: model.image)
-        : _page(model.theme);
+    final outgoing =
+        model.isReversed ? _page(model.theme) : RawImage(image: model.image);
+    final incoming =
+        model.isReversed ? RawImage(image: model.image) : _page(model.theme);
 
     return Stack(
       children: [

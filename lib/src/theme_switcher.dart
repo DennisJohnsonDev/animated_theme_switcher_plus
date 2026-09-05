@@ -4,19 +4,59 @@ import 'clippers/theme_switcher_circle_clipper.dart';
 import 'clippers/theme_switcher_clipper.dart';
 import 'theme_provider.dart';
 
+/// Signature for a callback that switches to [theme].
 typedef ChangeTheme = void Function(ThemeData theme);
+
+/// Builder that receives the enclosing [ThemeSwitcherState].
+///
+/// Used by [ThemeSwitcher.switcher].
 typedef BuilderWithSwitcher = Widget Function(
     BuildContext, ThemeSwitcherState switcher);
+
+/// Builder that receives the enclosing [ThemeSwitcherState] and active theme.
+///
+/// Used by [ThemeSwitcher.withTheme].
 typedef BuilderWithTheme = Widget Function(
     BuildContext, ThemeSwitcherState switcher, ThemeData theme);
 
+/// Wraps the widget that triggers a theme switch.
+///
+/// The reveal animation expands from this widget, so wrap the actual control
+/// the user touches — a button, a switch, a list tile — rather than a whole
+/// screen. Call [ThemeSwitcher.of] from inside [builder] to start a switch.
+///
+/// ```dart
+/// ThemeSwitcher(
+///   clipper: const ThemeSwitcherCircleClipper(),
+///   builder: (context) => IconButton(
+///     icon: const Icon(Icons.brightness_6),
+///     onPressed: () => ThemeSwitcher.of(context).changeTheme(theme: darkTheme),
+///   ),
+/// );
+/// ```
+///
+/// See also [ThemeSwitcher.switcher] and [ThemeSwitcher.withTheme], which pass
+/// the switcher — and the active theme — straight into the builder.
 class ThemeSwitcher extends StatefulWidget {
+  /// Creates a switcher whose reveal uses [clipper].
   const ThemeSwitcher({
-    Key? key,
+    super.key,
     this.clipper = const ThemeSwitcherCircleClipper(),
     required this.builder,
-  }) : super(key: key);
+  });
 
+  /// A [ThemeSwitcher] whose builder is handed the switcher directly.
+  ///
+  /// Saves a `ThemeSwitcher.of(context)` lookup inside the builder.
+  ///
+  /// ```dart
+  /// ThemeSwitcher.switcher(
+  ///   builder: (context, switcher) => IconButton(
+  ///     icon: const Icon(Icons.palette),
+  ///     onPressed: () => switcher.changeTheme(theme: pinkTheme),
+  ///   ),
+  /// );
+  /// ```
   factory ThemeSwitcher.switcher({
     Key? key,
     clipper = const ThemeSwitcherCircleClipper(),
@@ -28,6 +68,20 @@ class ThemeSwitcher extends StatefulWidget {
         builder: (ctx) => builder(ctx, ThemeSwitcher.of(ctx)),
       );
 
+  /// A [ThemeSwitcher] whose builder is handed the switcher and active theme.
+  ///
+  /// Convenient for toggles that branch on the current brightness.
+  ///
+  /// ```dart
+  /// ThemeSwitcher.withTheme(
+  ///   builder: (context, switcher, theme) => IconButton(
+  ///     icon: const Icon(Icons.brightness_6),
+  ///     onPressed: () => switcher.changeTheme(
+  ///       theme: theme.brightness == Brightness.light ? darkTheme : lightTheme,
+  ///     ),
+  ///   ),
+  /// );
+  /// ```
   factory ThemeSwitcher.withTheme({
     Key? key,
     clipper = const ThemeSwitcherCircleClipper(),
@@ -40,12 +94,22 @@ class ThemeSwitcher extends StatefulWidget {
             builder(ctx, s, ThemeModelInheritedNotifier.of(ctx).theme),
       );
 
+  /// Builds the widget the user interacts with.
   final Widget Function(BuildContext) builder;
+
+  /// Shape of the reveal started from this switcher.
+  ///
+  /// Defaults to [ThemeSwitcherCircleClipper]. Pass
+  /// [ThemeSwitcherCirclePlusClipper] or [ThemeSwitcherBoxPlusClipper] to get
+  /// the feathered reveals under a [PremiumThemeSwitchingArea].
   final ThemeSwitcherClipper clipper;
 
   @override
   ThemeSwitcherState createState() => ThemeSwitcherState();
 
+  /// The state of the nearest enclosing [ThemeSwitcher].
+  ///
+  /// Throws if `context` is not inside a [ThemeSwitcher].
   static ThemeSwitcherState of(BuildContext context) {
     final inherited =
         context.dependOnInheritedWidgetOfExactType<_InheritedThemeSwitcher>()!;
@@ -53,6 +117,7 @@ class ThemeSwitcher extends StatefulWidget {
   }
 }
 
+/// State of a [ThemeSwitcher]; call [changeTheme] to start a switch.
 class ThemeSwitcherState extends State<ThemeSwitcher> {
   final GlobalKey _globalKey = GlobalKey();
 
@@ -67,6 +132,16 @@ class ThemeSwitcherState extends State<ThemeSwitcher> {
     );
   }
 
+  /// Switches the app to [theme], revealing it from this switcher.
+  ///
+  /// [offset] is local to this switcher — pass `details.localPosition` from a
+  /// `TapDownDetails` to anchor the reveal at the exact touch point. Omit it
+  /// and the reveal starts from the switcher's centre.
+  ///
+  /// Set [isReversed] to peel the outgoing theme away instead of growing the
+  /// incoming one over it. [onAnimationFinish] fires when the reveal completes.
+  ///
+  /// Does nothing if a reveal is already running.
   void changeTheme({
     required ThemeData theme,
     bool isReversed = false,
@@ -86,11 +161,10 @@ class ThemeSwitcherState extends State<ThemeSwitcher> {
 class _InheritedThemeSwitcher extends InheritedWidget {
   final ThemeSwitcherState data;
 
-  _InheritedThemeSwitcher({
+  const _InheritedThemeSwitcher({
     required this.data,
-    Key? key,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   @override
   bool updateShouldNotify(_InheritedThemeSwitcher oldWidget) {

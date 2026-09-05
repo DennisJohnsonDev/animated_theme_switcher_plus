@@ -7,6 +7,7 @@ import 'theme_switcher_clipper.dart';
 /// path-based clipping. [getClip] is never called on the premium path;
 /// a plain circle is provided as a fallback if used with [ThemeSwitchingArea].
 class ThemeSwitcherCirclePlusClipper implements ThemeSwitcherClipper {
+  /// Creates the marker for a feathered circular reveal.
   const ThemeSwitcherCirclePlusClipper();
 
   @override

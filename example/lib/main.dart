@@ -8,12 +8,13 @@ import 'theme_config.dart';
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     final isPlatformDark =
-        WidgetsBinding.instance.window.platformBrightness == Brightness.dark;
+        WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+            Brightness.dark;
     final initTheme = isPlatformDark ? darkTheme : lightTheme;
     return ThemeProvider(
       initTheme: initTheme,
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       builder: (_, myTheme) {
         return MaterialApp(
           title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
           theme: myTheme,
           home: const MyHomePage(),
         );
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -146,8 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       return TapDownButton(
                         child: const Text('Circle Animation Plus'),
                         onTap: (details) {
-                          final model =
-                              ThemeModelInheritedNotifier.of(context);
+                          final model = ThemeModelInheritedNotifier.of(context);
                           if (model.controller.isAnimating) return;
                           HapticFeedback.mediumImpact();
                           PremiumThemeSwitchingArea.changeTheme(
@@ -167,8 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       return TapDownButton(
                         child: const Text('Box Animation Plus'),
                         onTap: (details) {
-                          final model =
-                              ThemeModelInheritedNotifier.of(context);
+                          final model = ThemeModelInheritedNotifier.of(context);
                           if (model.controller.isAnimating) return;
                           HapticFeedback.mediumImpact();
                           PremiumThemeSwitchingArea.changeTheme(
@@ -239,8 +239,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       return TapDownButton(
                         child: const Text('Box (Reverse) Plus'),
                         onTap: (details) {
-                          final model =
-                              ThemeModelInheritedNotifier.of(context);
+                          final model = ThemeModelInheritedNotifier.of(context);
                           if (model.controller.isAnimating) return;
                           final brightness = model.theme.brightness;
                           HapticFeedback.mediumImpact();
@@ -262,8 +261,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       return TapDownButton(
                         child: const Text('Circle (Reverse) Plus'),
                         onTap: (details) {
-                          final model =
-                              ThemeModelInheritedNotifier.of(context);
+                          final model = ThemeModelInheritedNotifier.of(context);
                           if (model.controller.isAnimating) return;
                           final brightness = model.theme.brightness;
                           HapticFeedback.mediumImpact();
@@ -348,10 +346,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class TapDownButton extends StatelessWidget {
   const TapDownButton({
-    Key? key,
+    super.key,
     required this.onTap,
     required this.child,
-  }) : super(key: key);
+  });
 
   final void Function(TapDownDetails details) onTap;
   final Widget child;

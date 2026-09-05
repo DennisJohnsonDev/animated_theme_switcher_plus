@@ -1,0 +1,26 @@
+# Files excluded from the published pub.dev archive.
+# NOTE: when a .pubignore exists, pub uses it INSTEAD of .gitignore,
+# so this must stay a superset of .gitignore.
+
+# Repo-local tooling, not part of the package
+CLAUDE.md
+.claude/
+
+# OS / editor noise
+.DS_Store
+.idea/
+.iml
+.vscode/
+
+# Build & tooling output
+**/.dart_tool/
+.packages
+.pub/
+build/
+ios/
+android/
+pubspec.lock
+
+example/.flutter-plugins
+example/.flutter-plugins-dependencies
+example/.metadata

@@ -1,84 +1,33 @@
-## 0.1.0
-
-- Forked from [kherel/animated_theme_switcher](https://github.com/kherel/animated_theme_switcher) v2.0.10.
-- Renamed package to `animated_theme_switcher_plus`.
-- **Fix:** `AnimationController` in `ThemeProvider` is now properly disposed, preventing memory leaks and the "AnimationController was not disposed" assertion in debug mode.
-- Migrated dev dependency from deprecated `pedantic` to `flutter_lints`.
-- Updated example to use Flutter 3+ `TextTheme.bodyLarge` (replacing deprecated `bodyText1`).
-
----
-
-## Upstream history (pre-fork)
-
-## 2.0.10
-  - remove the widget tree once the animation is finished
-
-## 2.0.9
-  - added custom offset to changeTheme method parameters
-  - added onAnimationFinish callback
-## 2.0.8
-  - key fix
-## 2.0.7
-  - hot reaload fix
-## 2.0.6
-  - bug fix
-## 2.0.5
-  - grammar fixes )))
-## 2.0.4
-  - readme fix
-## 2.0.3
-  - fixes const Widget bug
-## 2.0.2
-  - update dependencies
-  - update examples
-  - fixes
-## 2.0.1-nullsafety.0
-  - hide builder inside themeProvider widget
-
-## 2.0.0-nullsafety.0
-  - Removed unnecessary 'android' and 'ios' folders
-  - Migrated to null-safety
-  - Removed deprecated code
-  
-## 1.0.9
-
-  - supported platforms fix
-
-## 1.0.8
-
-  - add reverse animation feature
-  - specify supported platforms // web not supported
-
-## 1.0.7
-
-- add example with shared shared_preferences
-
-## 1.0.6
-
-- add custom clipper 
-- change background screenshot quality
-
-## 1.0.5
-
-- fix packages
-
-## 1.0.4
-
-- example updated
-- bug fixed
-
-## 1.0.3
-
-- update readme.md
-
-## 1.0.2
-
-- longer description added
-
-## 1.0.1
-
-- changelog.md added
-
 ## 1.0.0
 
-- Initial version
+Initial release. Requires Flutter 3.10 or newer (Dart 3).
+
+### Features
+
+- **Premium reveals** — `PremiumThemeSwitchingArea` renders feathered `ShaderMask` transitions with
+  soft gradient edges, a depth-bloom scale on the incoming theme, and a receding fade on the
+  outgoing one. Available as a radial reveal (`ThemeSwitcherCirclePlusClipper`) and a rectangular
+  reveal (`ThemeSwitcherBoxPlusClipper`).
+- **Classic reveals** — `ThemeSwitchingArea` animates a hard-edged `ClipPath` that grows from the
+  reveal origin, with circle and box clippers included.
+- **Tap-anchored origins** — pass an `offset` from `TapDownDetails` so the reveal starts exactly
+  where the user touched, rather than at the widget centre.
+- **Forward and reverse playback** — `isReversed` inverts the layer order so the outgoing theme
+  peels away instead of the incoming theme growing over it. Supported by both rendering modes.
+- **Mixed rendering** — `PremiumThemeSwitchingArea` falls back to classic path clipping for any
+  non-Plus clipper, so both styles can coexist on one screen without swapping the area widget.
+- **Custom clippers** — implement `ThemeSwitcherClipper` to define arbitrary reveal shapes.
+- **Duration management** — `PremiumThemeSwitchingArea.changeTheme` applies the longer premium
+  duration for the reveal and restores the provider's original duration on completion.
+- No dependencies beyond the Flutter SDK.
+
+### Implementation notes
+
+- `ThemeProvider` disposes both its `AnimationController` and its `ThemeModel`, preventing the
+  memory leak and the debug-mode "AnimationController was not disposed" assertion.
+- Premium reveals compress all visible motion into the first half of the controller timeline and
+  then snap the controller to its endpoint, so the tap gate reopens as soon as the animation is
+  perceptually finished instead of waiting out imperceptible tail motion.
+- Concurrent theme switches are dropped rather than queued — a tap during an in-flight reveal is a
+  no-op.
+- The screenshot layer is removed from the widget tree once the animation completes.
